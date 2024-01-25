@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Bronze Ingestion Patterns
-# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook/01-white?style=for-the-badge&logo=databricks)
+# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|01-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC  - **Singleplex:** One-to-one
 # MAGIC  - **Multiplex:** Many-to-one
@@ -35,12 +35,7 @@
 
 # COMMAND ----------
 
-database_name = f'{spark.sql("SELECT current_user()").first()[0].split("@")[0]}-udemy-professional' 
-spark.sql("USE CATALOG dvt_databricks")
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS `{database_name}`")
-spark.sql(f"USE SCHEMA `{database_name}`")
-
-checkpoint_path = "dbfs/mnt/demo-datasets/bookstore/checkpoints"
+# MAGIC %run ../resources/local-setup
 
 # COMMAND ----------
 
@@ -69,8 +64,11 @@ display(raw_json_df)
 from pyspark.sql.functions import col, date_format
 
 def process_bronze():
-  """Incrementally process files from the source to the bronze table"""
-
+  """
+  Read JSON files from dbfs:/mnt/demo-datasets/DE-Pro/bookstore/kafka-raw using Autoloader.
+  Write to the bronze table with schema evolution and partitioning by "topic" and "year".
+  Trigger the stream as a micro-batch.
+  """
   schema = "key BINARY, value BINARY, topic STRING, partition LONG, offset LONG, timestamp LONG"
 
   query = (
@@ -85,7 +83,7 @@ def process_bronze():
     .option("checkpointLocation", f"{checkpoint_path}/bronze")
     .option("mergeSchema", True) # Schema evolution for Autoloader
     .partitionBy("topic", "year_month")
-    .trigger(availableNow=True)
+    .trigger(availableNow=True) # Micro-batch trigger
     .table("bronze")
   )
 
