@@ -4,13 +4,35 @@
 
 # COMMAND ----------
 
-checkpoint_path = "dbfs/mnt/demo-datasets/bookstore/checkpoints"
-database_name = f'{spark.sql("SELECT current_user()").first()[0].split("@")[0]}-udemy-professional' 
+database_name = f'{spark.sql("SELECT current_user()").first()[0].split("@")[0]}-udemy-professional'
+db_name = f"`{database_name}`"
 
 spark.sql("USE CATALOG dvt_databricks")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS `{database_name}`")
 spark.sql(f"USE SCHEMA `{database_name}`")
 
-print(f"Set variable: 'checkpoint_path' to '{checkpoint_path}'")
 print(f"Using catalog: dvt_databricks")
 print(f"Using schema: {database_name}")
+
+# COMMAND ----------
+
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import col, from_json
+
+def bronze_json_parse(df:DataFrame, schema:str) -> DataFrame:
+    """
+    Parses JSON data in the 'value' column and selects fields based on the provided schema
+
+    Args:
+        df (DataFrame): Input DataFrame containing a column 'value' with JSON data
+        schema (String): Schema string specifying the structure fo the JSON data
+
+    Returns:
+        DataFrame with the parsed JSON fields selected
+    """
+
+    return df.select(from_json(col("value").cast("string"), schema).alias("v")).select("v.*")
+
+# COMMAND ----------
+
+print("Available function: 'bronze_json_parse' \nUsage: '.transform(lambda df: bronze_json_parse(df, schema))'")

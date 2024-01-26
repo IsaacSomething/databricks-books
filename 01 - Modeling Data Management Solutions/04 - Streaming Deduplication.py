@@ -8,11 +8,11 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../resources/copy-datasets
+# MAGIC %run ../resources/local-setup
 
 # COMMAND ----------
 
-# MAGIC %run ../resources/local-setup
+# MAGIC %run ../resources/copy-datasets
 
 # COMMAND ----------
 
@@ -35,7 +35,7 @@ duplication_count = (bronze_df
     .count()
 )
 
-display(dup_count)
+display(duplication_count)
 
 # COMMAND ----------
 
