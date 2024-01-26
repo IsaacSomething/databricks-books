@@ -7,11 +7,11 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../resources/copy-datasets
+# MAGIC %run ../resources/local-setup
 
 # COMMAND ----------
 
-# MAGIC %run ../resources/local-setup
+# MAGIC %run ../resources/copy-datasets
 
 # COMMAND ----------
 

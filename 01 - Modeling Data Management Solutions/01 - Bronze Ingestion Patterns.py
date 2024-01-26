@@ -31,14 +31,13 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../resources/copy-datasets
-
-# COMMAND ----------
-
 # MAGIC %run ../resources/local-setup
 
 # COMMAND ----------
 
+# MAGIC %run ../resources/copy-datasets
+
+# COMMAND ----------
 
 files = dbutils.fs.ls(f"{dataset_bookstore}/kafka-raw")
 display(files)                    
