@@ -252,9 +252,9 @@ class CourseDataset:
 # COMMAND ----------
 
 data_source_uri = "wasbs://course-resources@dalhussein.blob.core.windows.net/DE-Pro/datasets/bookstore/v1/"
-dataset_bookstore = 'dbfs:/mnt/demo-datasets/DE-Pro/bookstore'
+#dataset_bookstore = 'dbfs:/mnt/demo-datasets/DE-Pro/bookstore'
 spark.conf.set(f"dataset.bookstore", dataset_bookstore)
-checkpoint_path = "dbfs:/mnt/demo_pro/checkpoints"
+#checkpoint_path = "dbfs:/mnt/demo_pro/checkpoints"
 #db_name = "bookstore_eng_pro"
 
 bookstore = CourseDataset(data_source_uri, dataset_bookstore, checkpoint_path, db_name)

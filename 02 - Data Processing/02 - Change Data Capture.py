@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Change Data Capture
-# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|06-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
+# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|2.02-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC Process of identifying changes made to data in the **source** and delivering those changes (*row level changes*) to the **target** (*sink*) <br />
 # MAGIC Changes include the store data as well as metadata with timestamp (*or version number*) and operation (*update/delete/insert*) <br />

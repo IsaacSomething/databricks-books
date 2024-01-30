@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Bronze Ingestion Patterns
-# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|01-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
+# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|1.01-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC  - **Singleplex:** One-to-one
 # MAGIC  - **Multiplex:** Many-to-one
@@ -46,16 +46,8 @@ display(files)
 
 # MAGIC %md
 # MAGIC #### Example using Autoloader
-# MAGIC Read file from `dbfs:/mnt/demo-datasets/DE-Pro/bookstore/kafka-raw/01.json` (*Raw Kafka Data*) and detect new files as they arrive in order to ingest them into the **Multiplex** bronze table
-
-# COMMAND ----------
-
-raw_json_df = spark.read.json(f"{dataset_bookstore}/kafka-raw")
-display(raw_json_df)
-
-# COMMAND ----------
-
-# MAGIC %md
+# MAGIC Read file from `dbfs:/mnt/demo-datasets/DE-Pro/bookstore/kafka-raw/01.json` (*Raw Kafka Data*) and detect new files as they arrive in order to ingest them into the **Multiplex** bronze table.
+# MAGIC
 # MAGIC **key** and **value** columns are encoded in binary. The **value** column represents the actual values sent as `json`
 
 # COMMAND ----------
@@ -115,7 +107,7 @@ display(bronze_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Load new data into the source directory `dbfs:/mnt/demo-datasets/DE-Pro/bookstore/kafka-raw` ready for ingestion
+# MAGIC Load new data into the source directory ready for ingestion
 
 # COMMAND ----------
 
@@ -128,9 +120,14 @@ bookstore.load_new_data()
 
 # COMMAND ----------
 
+bronze_count_df = spark.table("bronze").count()
+print(bronze_count_df)
+
+# COMMAND ----------
+
 process_bronze()
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT COUNT(*) FROM bronze
+bronze_count_df = spark.table("bronze").count()
+print(bronze_count_df)

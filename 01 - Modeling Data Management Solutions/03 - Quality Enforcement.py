@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Quality Enforcement
-# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|03-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
+# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|1.03-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC Use table constraints to ensure the quailty of the data. Check constraints apply boolean filters to columns and prevent data violating these constraints from being written
 
