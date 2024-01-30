@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Streaming From Multiplex Bronze
-# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|02-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
+# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|1.02-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC Pass data of a single topic from the multiplex bronze table into a newly created silver orders table
 
@@ -21,7 +21,7 @@ display(bronze_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Cast binary for **key** and **value** columns so that it actually makes sense
+# MAGIC Cast binary columns **key** and **value** so that they are readable as text values
 
 # COMMAND ----------
 
@@ -32,8 +32,24 @@ display(bronze_df)
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC Return 1 value to be used as in `schema_of_json` in order to get the schema for the `books`
+
+# COMMAND ----------
+
 # MAGIC %sql
 # MAGIC SELECT cast(value AS STRING) FROM bronze LIMIT 1
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC
+# MAGIC SELECT schema_of_json('{"book_id":"B01","title":"The Soul of a New Machine","author":"Tracy Kidder","price":49,"updated":"2021-11-07 17:11:33.507"}') AS schema
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Create a view table of how we would like the file table to be added
 
 # COMMAND ----------
 
@@ -49,7 +65,8 @@ display(bronze_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Lets now convert this logic to a streaming read process. First convert out static table into a streaming temporary view. This allows us to write streaming queries with Spark SQL
+# MAGIC Lets now convert this logic to a streaming read process. <br />
+# MAGIC **First** convert out static table into a streaming temporary view. This allows us to write streaming queries with Spark SQL
 
 # COMMAND ----------
 
@@ -129,6 +146,5 @@ query.awaitTermination()
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT *
-# MAGIC FROM orders_silver
+orders_silver_df = spark.table("orders_silver")
+display(orders_silver_df)

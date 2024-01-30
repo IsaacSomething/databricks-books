@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Slowly Changing Dimensions
-# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|05-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
+# MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|2.01-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC SCD is a data management concept that determines how tables handle data that changes over time i.e. whether you want to overwrite values in the table or retain their history, which is determined by the **SCD type**
 # MAGIC
@@ -26,7 +26,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **SCD type 2** query statement that merges updates and checks the condition with `WHEN MATCHED` to either add or append data into the table
+# MAGIC A **SCD type 2** query statement that merges updates and checks the condition with `WHEN MATCHED` to either add or append data into the table
 
 # COMMAND ----------
 
@@ -79,6 +79,11 @@ def type2_upsert(micro_batch_df, batch):
     """
     
     micro_batch_df.sparkSession.sql(query)
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC Create the table `books_silver` which is used in the function above merge data from bronze
 
 # COMMAND ----------
 

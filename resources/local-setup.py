@@ -4,8 +4,11 @@
 
 # COMMAND ----------
 
-database_name = f'{spark.sql("SELECT current_user()").first()[0].split("@")[0]}-udemy-professional'
+name = spark.sql("SELECT current_user()").first()[0].split("@")[0]
+database_name = f'{name}-udemy-professional'
 db_name = f"`{database_name}`"
+dataset_bookstore = f'dbfs:/mnt/{name}/bookstore'
+checkpoint_path = f'{dataset_bookstore}/checkpoints'
 
 spark.sql("USE CATALOG dvt_databricks")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS `{database_name}`")
@@ -13,6 +16,8 @@ spark.sql(f"USE SCHEMA `{database_name}`")
 
 print(f"Using catalog: dvt_databricks")
 print(f"Using schema: {database_name}")
+print(f"dataset_bookstore: {dataset_bookstore}")
+print(f"checkpoint_path: {checkpoint_path}")
 
 # COMMAND ----------
 
