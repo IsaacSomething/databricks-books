@@ -5,16 +5,16 @@
 # COMMAND ----------
 
 name = spark.sql("SELECT current_user()").first()[0].split("@")[0]
-database_name = f'{name}-udemy-professional'
-db_name = f"`{database_name}`"
-dataset_bookstore = f'dbfs:/mnt/{name}/bookstore'
+database_name = f'{name}_ud_pr'
+db_name = f'`{database_name}`'
+dataset_bookstore = f'dbfs:/mnt/{database_name}/bookstore'
 checkpoint_path = f'{dataset_bookstore}/checkpoints'
 
-spark.sql("USE CATALOG dvt_databricks")
+spark.sql("USE CATALOG hive_metastore")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS `{database_name}`")
 spark.sql(f"USE SCHEMA `{database_name}`")
 
-print(f"Using catalog: dvt_databricks")
+print(f"Using catalog: hive_metastore")
 print(f"Using schema: {database_name}")
 print(f"dataset_bookstore: {dataset_bookstore}")
 print(f"checkpoint_path: {checkpoint_path}")
@@ -38,6 +38,30 @@ def bronze_json_parse(df:DataFrame, schema:str) -> DataFrame:
 
     return df.select(from_json(col("value").cast("string"), schema).alias("v")).select("v.*")
 
+print("Available function: 'bronze_json_parse' \nUsage: '.transform(lambda df: bronze_json_parse(df, schema))'")
+
 # COMMAND ----------
 
-print("Available function: 'bronze_json_parse' \nUsage: '.transform(lambda df: bronze_json_parse(df, schema))'")
+def clean_up():
+    try:
+        spark.sql(f"USE `{database_name}`") 
+        spark.sql(f"DROP DATABASE `{database_name}`")
+        print(f"Database '{database_name}' dropped successfully.")
+    except:
+        print(f"Database '{database_name}' does not exist.")
+
+    directory_path = f'dbfs:/mnt/{database_name}'
+    if dbutils.fs.rm('/mnt/{database_name}'):
+        try:
+            dbutils.fs.rm(directory_path, True)
+            print(f'Directory deleted: {directory_path}')
+        except:
+            print(f"There was an issue deleting the {directory_path}. Delete operation skipped")
+    else:
+        print(f"The directory {directory_path} does not exist. Delete operation skipped")
+
+print("Available function: 'clean-up' \nUsage: 'cleanup()'")
+
+# COMMAND ----------
+
+clean_up()
