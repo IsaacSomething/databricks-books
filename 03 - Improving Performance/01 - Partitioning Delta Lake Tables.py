@@ -52,7 +52,7 @@
 # MAGIC   .table("my_table)
 # MAGIC ```
 # MAGIC
-# MAGIC **NOTE:** the actule deletion of the files will not occur until you have run the `VACUUM` command on the table.
+# MAGIC **NOTE:** the actual deletion of the files will not occur until you have run the `VACUUM` command on the table.
 
 # COMMAND ----------
 
@@ -71,10 +71,3 @@
 
 # MAGIC %sql
 # MAGIC DESCRIBE TABLE EXTENDED bronze
-
-# COMMAND ----------
-
-files = dbutils.fs.ls("s3://databricks-workspace-stack-cce07-metastore-bucket/a384d01e-0759-43b3-bf4d-56b7c3060a74/tables/a0c34f62-3acb-471b-9f9b-279beefc6f9b")
-''' display(files) '''
-for file in files:
-    print(file.path)

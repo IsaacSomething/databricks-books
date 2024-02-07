@@ -52,7 +52,7 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE TABLE EXTENDED customers_silver
+# MAGIC DESC TABLE EXTENDED customers_silver
 
 # COMMAND ----------
 
@@ -94,6 +94,11 @@ display(cdf_df)
 
 # MAGIC %sql
 # MAGIC DESCRIBE EXTENDED customers_silver
+
+# COMMAND ----------
+
+files = dbutils.fs.ls(f'user/hive/warehouse/{database_name}.db/customers_silver/_change_data')
+display(files)
 
 # COMMAND ----------
 

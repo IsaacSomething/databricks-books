@@ -31,7 +31,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Check the constraint by adding a value less than 2020. The `INSERT` will fail completely as the transaction is ACID compliant 
+# MAGIC Check the constraint by adding a value less than 2020. The `INSERT` will **fail** completely as the transaction is ACID compliant
 
 # COMMAND ----------
 

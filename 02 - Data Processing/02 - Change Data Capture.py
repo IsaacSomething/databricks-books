@@ -105,7 +105,8 @@ display(ranked_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **NOTE:** Rank window functions are not allowed on streams! To bypass this issue we can we can use `foreachBatch` logic. Processing the data of each batch before merging it into the target table (*sink*)
+# MAGIC **NOTE: Rank window functions are not allowed on streams!** <br />
+# MAGIC To bypass this issue we can we can use `foreachBatch` logic. Processing the data of each batch before merging it into the target table (*sink*)
 
 # COMMAND ----------
 
