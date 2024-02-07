@@ -45,23 +45,17 @@ print("Available function: 'bronze_json_parse' \nUsage: '.transform(lambda df: b
 def clean_up():
     try:
         spark.sql(f"USE `{database_name}`") 
-        spark.sql(f"DROP DATABASE `{database_name}`")
+        spark.sql(f"DROP DATABASE `{database_name}` CASCADE")
         print(f"Database '{database_name}' dropped successfully.")
     except:
         print(f"Database '{database_name}' does not exist.")
 
     directory_path = f'dbfs:/mnt/{database_name}'
-    if dbutils.fs.rm('/mnt/{database_name}'):
-        try:
-            dbutils.fs.rm(directory_path, True)
-            print(f'Directory deleted: {directory_path}')
-        except:
-            print(f"There was an issue deleting the {directory_path}. Delete operation skipped")
-    else:
-        print(f"The directory {directory_path} does not exist. Delete operation skipped")
+    try:
+        dbutils.fs.ls(directory_path)
+        dbutils.fs.rm(directory_path, True)
+        print(f'Directory deleted: {directory_path}')
+    except:
+        print(f"There was an issue deleting the {directory_path}. Delete operation skipped")
 
 print("Available function: 'clean-up' \nUsage: 'cleanup()'")
-
-# COMMAND ----------
-
-clean_up()

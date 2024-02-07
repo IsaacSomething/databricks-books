@@ -3,31 +3,19 @@
 # MAGIC # Bronze Ingestion Patterns
 # MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|1.01-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
+# MAGIC <br />
+# MAGIC
 # MAGIC  - **Singleplex:** One-to-one
 # MAGIC  - **Multiplex:** Many-to-one
-# MAGIC  
-# MAGIC <!-- <img src="https://raw.githubusercontent.com/IsaacSomething/databricks-books/8cd88346aa040d5868b3138c76f116dca632fd1a/resources/01-model.png" alt="Data model" width="800" height="auto"> -->
-
-# COMMAND ----------
-
-# MAGIC %md
+# MAGIC
 # MAGIC #### Singleplex
-# MAGIC Where each dataset is ingested separately into a bronze table
+# MAGIC Where each dataset is ingested separately into a bronze table. This pattern can work well for **batch processing**
+# MAGIC ![](/files/tcuthbert/singleplex_bronze.png)
 # MAGIC
-# MAGIC dataset/topic 1 ---> Delta table 1 <br />
-# MAGIC dataset/topic 2 ---> Delta table 2 <br /> 
-# MAGIC dataset/topic 3 ---> Delta table 3 <br /> 
-# MAGIC
-# MAGIC This pattern can work well for **batch processing**
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC #### Multiplex
-# MAGIC
-# MAGIC dataset ----topic 1,2,3 ...----> Delta table
-# MAGIC
 # MAGIC Combines many topics and streams them into a single bronze table. Silver layer tables are then created with filters on the topics from the bronze table
+# MAGIC ![](/files/tcuthbert/multiplex_bronze.png)
+# MAGIC
 
 # COMMAND ----------
 

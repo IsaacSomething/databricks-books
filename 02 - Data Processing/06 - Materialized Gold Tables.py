@@ -38,7 +38,7 @@ from pyspark.sql.functions import window, count, avg
 
 query = (
     spark.readStream.table("book_sales")
-    .withWatermark("order_timestamp", "10 minutes") #this doesnt make sense to add this to a microbatch operation that is take like 2 seconds to finish
+    .withWatermark("order_timestamp", "10 minutes") #this doesnt make sense to add this to a microbatch operation that takes like 2 seconds to finish
     .groupBy(window("order_timestamp", "5 minutes").alias("time"),"author")
     .agg(
         count("order_id").alias("orders_count"),

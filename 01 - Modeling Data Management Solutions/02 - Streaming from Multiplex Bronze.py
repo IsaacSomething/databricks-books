@@ -4,6 +4,8 @@
 # MAGIC ![Static Badge](https://img.shields.io/badge/Development-notebook|1.02-123/02?style=for-the-badge&logo=databricks&color=red&labelColor=grey&logoColor=white)
 # MAGIC
 # MAGIC Pass data of a single topic from the multiplex bronze table into a newly created silver orders table
+# MAGIC
+# MAGIC ![](/files/tcuthbert/overview.png)
 
 # COMMAND ----------
 
@@ -38,12 +40,31 @@ display(bronze_df)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT cast(value AS STRING) FROM bronze LIMIT 1
+# MAGIC SELECT *, cast(value AS STRING) FROM bronze LIMIT 1
+
+# COMMAND ----------
+
+from pyspark.sql.functions import col
+
+bronze_values_df = (
+    spark.table("bronze")
+    .withColumn("value", col("value").cast("string"))
+    .withColumn("key", col("key").cast("string"))
+    .limit(1)
+)
+
+json_string = bronze_values_df.toJSON().collect()[0]
+print(json_string)
+
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Use the values above to with `schema_of_json` to get the schema of the values
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC
 # MAGIC SELECT schema_of_json('{"book_id":"B01","title":"The Soul of a New Machine","author":"Tracy Kidder","price":49,"updated":"2021-11-07 17:11:33.507"}') AS schema
 
 # COMMAND ----------
@@ -60,11 +81,13 @@ display(bronze_df)
 # MAGIC   FROM bronze
 # MAGIC   WHERE topic = "orders"
 # MAGIC )
-# MAGIC
 
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC
+# MAGIC #### Kill the stream above
+# MAGIC
 # MAGIC Lets now convert this logic to a streaming read process. <br />
 # MAGIC **First** convert out static table into a streaming temporary view. This allows us to write streaming queries with Spark SQL
 
